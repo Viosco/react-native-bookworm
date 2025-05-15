@@ -5,20 +5,10 @@ import jwt from "jsonwebtoken";
 const router = express.Router();
 
 const generateToken = (userId) => {
-    return jwt.sign({userId}, process.env.JWT_SECRET, {
-        expiresIn: "15d",
-    });
-    // , (err, token) => {
-    //     if(err) {
-    //         console.log(err);
-    //         return null;
-    //     }
-    //     return token;
-    // });
+    return jwt.sign({userId}, process.env.JWT_SECRET, {expiresIn: "15d"});
 }
 
 router.post("/register", async(req, res) => {
-    console.log('Registering user:', username, email);
     try {
         const {username, email, password} = req.body;
 
@@ -65,7 +55,8 @@ router.post("/register", async(req, res) => {
         await newUser.save();
 
         const token = generateToken(newUser._id);
-        res.status(201).json({
+
+        return res.status(201).json({
             token,
             user: {
                 id: newUser._id,
@@ -76,8 +67,8 @@ router.post("/register", async(req, res) => {
         });
 
     } catch (error) {
-        console.log("Error in register route", error);
-        res.status(500).json({message: "Internal server error"});
+        //console.log("Error in register route", error);
+        return res.status(500).json({message: "Internal server error"});
     }
 });
 
@@ -102,19 +93,19 @@ router.post("/login", async(req, res) => {
 
         //generate token
         const token = generateToken(user._id);
-        res.status(200).json({
+        return res.status(200).json({
             token,
             user: {
-                id: newUser._id,
-                username: newUser.username,
-                email: newUser.email,
-                profileImage: newUser.profileImage,
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                profileImage: user.profileImage,
             }
         });
 
     } catch (error) {
         console.log("Error in login route", error);
-        res.status(500).json({message: "Internal server error"});
+        return res.status(500).json({message: "Internal server error"});
     }
 });
 

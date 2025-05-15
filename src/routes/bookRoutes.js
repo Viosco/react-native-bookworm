@@ -35,11 +35,11 @@ router.post("/", protectRoute, async(req, res) => {
         
         await newBook.save();
         // Return the created book
-        res.status(201).json({ message: newBook });
+        return res.status(201).json({ message: newBook });
 
     } catch (error) {
         console.log("Error in create book route", error);
-        res.status(500).json({ message: error.message || "Internal server error" });
+        return res.status(500).json({ message: error.message || "Internal server error" });
     }
 });
 
@@ -69,7 +69,7 @@ router.get("/", protectRoute, async(req, res) => {
 
     } catch (error) {
         console.log("Error in getting all books route", error);
-        res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error" });
     }
 });
 
@@ -94,11 +94,11 @@ router.delete("/:id", protectRoute, async(req, res) => {
 
         //delete book
         await book.deleteOne();
-        res.status(200).json({ message: "Book deleted successfully" });
+        return res.status(200).json({ message: "Book deleted successfully" });
         
     } catch (error) {
         console.log("Error in deleting book route", error);
-        res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error" });
     }
 });
 
@@ -112,7 +112,7 @@ router.get("/user", protectRoute, async(req, res) => {
 
     } catch (error) {
         console.log("Error in getting recommended books route", error);
-        res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error" });
     }
 });
 //get book
