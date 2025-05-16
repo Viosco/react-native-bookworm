@@ -28,14 +28,14 @@ router.post("/", protectRoute, async(req, res) => {
         const newBook = new Book({
             title,
             caption,
-            rating,
+            rating: Number(rating),
             image: imageUrl,
             user: req.user._id,
         });
         
         await newBook.save();
         // Return the created book
-        return res.status(201).json({ message: newBook });
+        return res.status(201).json({ book: newBook });
 
     } catch (error) {
         console.log("Error in create book route", error);
