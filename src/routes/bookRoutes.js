@@ -19,13 +19,13 @@ router.post("/", protectRoute, async(req, res) => {
             upload_preset: "bookimages",
         });
         // Check if the upload was successful
-        if (!uploadResponse) {
+        if (!uploadResponse || !uploadResponse.secure_url) {
             return res.status(500).json({ message: "Error uploading image" });
         }
         // Get the secure URL of the uploaded image
         const imageUrl = uploadResponse.secure_url;
         // Add logic to save the book to the database
-        const newBook = Book({
+        const newBook = new Book({
             title,
             caption,
             rating,
