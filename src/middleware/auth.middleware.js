@@ -6,7 +6,7 @@ const protectRoute = async (req, res, next) => {
         //const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
         const token = req.headers("Authorization").replace("Bearer ", "");
         if (!token) {
-            return res.status(401).json({ message: "Not authorized token, access denied" });
+            return res.status(401).json({ message: "No authorized token, access denied" });
         }
         //verfy token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
