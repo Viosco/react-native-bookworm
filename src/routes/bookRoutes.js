@@ -15,23 +15,23 @@ router.post("/", protectRoute, async(req, res) => {
         }
 
         //upload image to cloudinary
-        const uploadResponse = await cloudinary.uploader.upload(image, {
-            upload_preset: "bookimages",
-        });
-        //Check if the upload was successful
-        if (!uploadResponse || !uploadResponse.secure_url) {
-            return res.status(500).json({ message: "Error uploading image" });
-        }
+        // const uploadResponse = await cloudinary.uploader.upload(image, {
+        //     upload_preset: "bookimages",
+        // });
+        // //Check if the upload was successful
+        // if (!uploadResponse || !uploadResponse.secure_url) {
+        //     return res.status(500).json({ message: "Error uploading image" });
+        // }
         //Get the secure URL of the uploaded image
-        const imageUrl = uploadResponse.data.secure_url;
+        //const imageUrl = uploadResponse.data.secure_url;
         //const imageUrl = uploadResponse.secure_url;
         // Add logic to save the book to the database
         const newBook = new Book({
             title,
             caption,
             rating: Number(rating),
-            image: imageUrl,
-            //image,
+            //image: imageUrl,
+            image,
             user: req.user._id,
         });
         
