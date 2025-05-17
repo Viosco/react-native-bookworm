@@ -3,13 +3,14 @@ import User from "../models/User.js";
 
 const protectRoute = async (req, res, next) => {
   try {
+      //get token
     const authHeader = req.headers.Authorization;
-
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "No authorized token, access denied" });
+    //const authHeader = req.headers("Authorization");
+    //const token = req.headers("Authorization").replace("Bearer ", "");
+    const token = authHeader.replace("Bearer ", "");
+    if (!token) {
+        return res.status(401).json({ message: "No authorized token, access denied" });
     }
-
-    const token = authHeader.split(" ")[1];
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
