@@ -63,6 +63,7 @@ router.post("/register", async(req, res) => {
                 username: newUser.username,
                 email: newUser.email,
                 profileImage: newUser.profileImage,
+                createdAt: newUser.createdAt
             }
         });
 
@@ -93,13 +94,15 @@ router.post("/login", async(req, res) => {
 
         //generate token
         const token = generateToken(user._id);
-        return res.status(200).json({
+        
+        res.status(200).json({
             token,
             user: {
                 id: user._id,
                 username: user.username,
                 email: user.email,
                 profileImage: user.profileImage,
+                createdAt: user.createdAt
             }
         });
 
