@@ -1,6 +1,5 @@
 import { v2 } from 'cloudinary';
 //import dotenv from 'dotenv';
-
 //dotenv.config(); // Load env vars
 
 export default cloudinary = v2.config({
