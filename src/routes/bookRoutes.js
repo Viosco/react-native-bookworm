@@ -110,6 +110,7 @@ router.delete("/:id", protectRoute, async(req, res) => {
                 const urlParts = bookImage.split('/');
                 const fileName = urlParts.pop() || '';
                 const publicId = `bookimages/${fileName.split('.')[0]}`;
+                console.log("Public ID", publicId);
                 await cloudinary.uploader.destroy(publicId);
 
             } catch (error) {
