@@ -75,6 +75,20 @@ router.get("/", protectRoute, async(req, res) => {
     }
 });
 
+//get recommended books
+router.get("/user", protectRoute, async(req, res) => {
+    try {
+        //get books from db in descending order
+        const books = await Book.find({ user: req.user._id }).sort({ createdAt: -1 });
+        // Return the list of books from user
+        res.send(books);
+
+    } catch (error) {
+        console.log("Error in getting recommended books route", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+});
+
 //delete book
 router.delete("/:id", protectRoute, async(req, res) => {
     try {
@@ -89,9 +103,16 @@ router.delete("/:id", protectRoute, async(req, res) => {
         }   
         //delete image from cloudinary
         if (book.image && book.image.includes("cloudinary")) {  
-            // Extract the public ID from the image URL
-            const publicId = book.image.split("/").pop().split(".")[0];
-            await cloudinary.uploader.destroy(publicId);
+            try {
+                // Extract the public ID from the image URL
+                const publicId = book.image.split("/").pop().split(".")[0];
+                await cloudinary.uploader.destroy(publicId);
+
+            } catch (error) {
+                console.log("Error deleting image:", error);
+                return; 
+                //res.status(401).json({ message: "Error deleting image." });
+            }
         }
 
         //delete book
@@ -104,20 +125,7 @@ router.delete("/:id", protectRoute, async(req, res) => {
     }
 });
 
-//get recommended books
-router.get("/user", protectRoute, async(req, res) => {
-    try {
-        //get books from db in descending order
-        const books = await Book.find({ user: req.user._id }).sort({ createdAt: -1 });
-        // Return the list of books
-        res.send(books);
 
-    } catch (error) {
-        console.log("Error in getting recommended books route", error);
-        return res.status(500).json({ message: "Internal server error" });
-    }
-});
-//get book
 
 
 export default router;
